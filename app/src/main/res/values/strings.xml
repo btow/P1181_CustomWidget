@@ -1,10 +1,22 @@
 <resources>
     <string name="app_name">P1181_CustomWidget</string>
-    <string name="widget_text">Text in widget</string>
+
     <string name="my_widget">MyWidget</string>
-    <string name="widget_name">My furs Widget</string>
+    <string name="widget_text">Text in widget</string>
+    <string name="widget_name">My second Widget</string>
     <string name="on_enabled">onEnabled()</string>
     <string name="on_update">onUpdate()</string>
     <string name="on_deleted">onDeleted()</string>
     <string name="on_disabled">onDisabled()</string>
+
+    <string name="red">Red</string>
+    <string name="green">Green</string>
+    <string name="blue">Blue</string>
+    <string name="ok">OK</string>
+
+    <string name="config_activity">ConfigActivity</string>
+    <string name="on_create">onCreate()</string>
+    <string name="finish">finish()</string>
+    <string name="update_widget">updateWidget()</string>
+
 </resources>

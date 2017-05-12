@@ -4,6 +4,8 @@ package com.example.samsung.p1181_customwidget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.widget.RemoteViews;
 
 import java.util.Arrays;
 
@@ -14,6 +16,8 @@ import java.util.Arrays;
 public class MyWidget extends AppWidgetProvider {
 
     private String message;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     @Override
     public void onEnabled(Context context) {
@@ -30,6 +34,14 @@ public class MyWidget extends AppWidgetProvider {
                 + " " + context.getString(R.string.on_update)
                 + " " + Arrays.toString(appWidgetIds);
         Messager.sendToAllRecipients(context, message);
+
+        preferences = context.getSharedPreferences(
+                ConfigActivity.WIDGET_PREF,
+                Context.MODE_PRIVATE
+        );
+        for (int id : appWidgetIds) {
+            updateWidget(context, appWidgetManager, preferences, id);
+        }
     }
 
     @Override
@@ -39,7 +51,16 @@ public class MyWidget extends AppWidgetProvider {
                 + " " + context.getString(R.string.on_deleted)
                 + " " + Arrays.toString(appWidgetIds);
         Messager.sendToAllRecipients(context, message);
-    }
+
+        // Удаляем Preferences
+        editor = context.getSharedPreferences(
+                ConfigActivity.WIDGET_PREF,
+                Context.MODE_PRIVATE).edit();
+        for (int widgetID : appWidgetIds) {
+            editor.remove(ConfigActivity.WIDGET_TEXT + widgetID);
+            editor.remove(ConfigActivity.WIDGET_COLOR + widgetID);
+        }
+        editor.commit();    }
 
     @Override
     public void onDisabled(Context context) {
@@ -47,5 +68,28 @@ public class MyWidget extends AppWidgetProvider {
         message = context.getString(R.string.my_widget)
                 + " " + context.getString(R.string.on_disabled);
         Messager.sendToAllRecipients(context, message);
+    }
+
+    private void updateWidget(
+            final Context context,
+            final AppWidgetManager appWidgetManager,
+            final SharedPreferences preferences,
+            final int widgetID) {
+        message = context.getString(R.string.my_widget) + " " + context.getString(R.string.update_widget) + ": " + widgetID;
+        Messager.sendToAllRecipients(context, message);
+        //Чтение параметров Preferences
+        String widgwtText = preferences.getString(ConfigActivity.WIDGET_TEXT + widgetID, null);
+
+        if (widgwtText == null) {
+            return;
+        }
+
+        int widgetColor = preferences.getInt(ConfigActivity.WIDGET_COLOR + widgetID, 0);
+        //Настройка внешнего вида виджета
+        RemoteViews widgeView = new RemoteViews(context.getPackageName(), R.layout.widget);
+        widgeView.setTextViewText(R.id.tv, widgwtText);
+        widgeView.setInt(R.id.tv, "setBackgroundColor", widgetColor);
+        //Обновление виджета
+        appWidgetManager.updateAppWidget(widgetID, widgeView);
     }
 }

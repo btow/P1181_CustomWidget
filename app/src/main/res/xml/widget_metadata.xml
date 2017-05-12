@@ -3,6 +3,7 @@
     android:initialLayout="@layout/widget"
     android:minHeight="40dp"
     android:minWidth="110dp"
-    android:updatePeriodMillis="2400000" >
+    android:updatePeriodMillis="2400000"
+    android:configure="com.example.samsung.p1181_customwidget.ConfigActivity">
 
 </appwidget-provider>
