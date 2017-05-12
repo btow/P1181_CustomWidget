@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">P1181_CustomWidget</string>
+    <string name="widget_text">Text in widget</string>
+    <string name="my_widget">MyWidget</string>
+    <string name="widget_name">My furs Widget</string>
+    <string name="on_enabled">onEnabled()</string>
+    <string name="on_update">onUpdate()</string>
+    <string name="on_deleted">onDeleted()</string>
+    <string name="on_disabled">onDisabled()</string>
+</resources>
