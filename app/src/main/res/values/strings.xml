@@ -18,5 +18,6 @@
     <string name="on_create">onCreate()</string>
     <string name="finish">finish()</string>
     <string name="update_widget">updateWidget()</string>
+    <string name="settings">Settings</string>
 
 </resources>

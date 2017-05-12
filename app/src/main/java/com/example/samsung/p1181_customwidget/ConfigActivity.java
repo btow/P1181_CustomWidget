@@ -21,6 +21,7 @@ public class ConfigActivity extends Activity {
     private EditText etText;
     private SharedPreferences preferences;
     private Editor  editor;
+    private AppWidgetManager manager;
 
     public final static String WIDGET_PREF = "widget_pref",
             WIDGET_TEXT = "widget_text_",
@@ -43,8 +44,6 @@ public class ConfigActivity extends Activity {
         if (widgetID == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
         }
-        //Получение настроек цвета
-        color = extras.getInt(WIDGET_COLOR, Color.RED);
         //Формирование Intent'а ответа
         resultValue = new Intent();
         resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetID);
@@ -57,6 +56,10 @@ public class ConfigActivity extends Activity {
     public void onClickBtn(View view) {
 
         int selRbColor = ((RadioGroup) findViewById(R.id.rgColor)).getCheckedRadioButtonId();
+
+        if (color == 0) {
+            color = Color.RED;
+        }
 
         switch (selRbColor) {
 
@@ -79,6 +82,9 @@ public class ConfigActivity extends Activity {
         editor.putString(WIDGET_TEXT + widgetID, etText.getText().toString());
         editor.putInt(WIDGET_COLOR + widgetID, color);
         editor.commit();
+        //Принудительный вызов обновления виджета
+        manager = AppWidgetManager.getInstance(this);
+        MyWidget.updateWidget(this, manager, preferences, widgetID);
         //Положительный ответ
         setResult(RESULT_OK, resultValue);
 
